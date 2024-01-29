@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Branch of Xcratch"
+        description: "Branch of Hcratch"
         default: "xcratch-dev"
         required: true
       dev:
@@ -21,32 +21,32 @@ jobs:
       - name: checkout scratch-gui
         uses: actions/checkout@v3
         with:
-          repository: xcratch/scratch-gui
+          repository: hcratch/scratch-gui
           ref: ${{ inputs.branch }}
           path: ./scratch-gui
       - run: npm install
         working-directory: ./scratch-gui
-      - name: checkout xcratch.github.io
+      - name: checkout hcratch.github.io
         uses: actions/checkout@v3
         with:
-          repository: xcratch/xcratch.github.io
-          path: ./xcratch.github.io
+          repository: hcratch/hcratch.github.io
+          path: ./hcratch.github.io
       - run: node ./scripts/replace-logo.js ../scratch-gui
-        working-directory: ./xcratch.github.io
+        working-directory: ./hcratch.github.io
       - run: node ./scripts/original-assets.js ../scratch-gui
-        working-directory: ./xcratch.github.io
+        working-directory: ./hcratch.github.io
       - name: build scratch-gui
         run: npm run build
         working-directory: ./scratch-gui
-      - run: cp ./xcratch.github.io/editor/favicon.ico ./scratch-gui/build/static/favicon.ico
-      - run: mv -T ./xcratch.github.io/public ./public
+      - run: cp ./hcratch.github.io/editor/favicon.ico ./scratch-gui/build/static/favicon.ico
+      - run: mv -T ./hcratch.github.io/public ./public
       - run: mv -T ./scratch-gui/build ./public/editor
-      - name: checkout xcratch-doc
+      - name: checkout hcratch-doc
         uses: actions/checkout@v3
         with:
-          repository: xcratch/xcratch-doc
-          path: ./xcratch-doc
-      - run: mv -T ./xcratch-doc/docs ./public/docs
+          repository: hcratch/hcratch-doc
+          path: ./hcratch-doc
+      - run: mv -T ./hcratch-doc/docs ./public/docs
       - name: publish for dev
         if: ${{ inputs.dev }}
         uses: peaceiris/actions-gh-pages@v3
